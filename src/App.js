@@ -2,6 +2,9 @@ import GlobalStyles from './Global'
 import styled from 'styled-components'
 import { Route, Switch } from 'react-router-dom'
 import { useLocation } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { loadCardFB } from './redux/modules/card'
 
 import Header from './components/Header'
 import AddWord from './components/AddWord'
@@ -22,7 +25,14 @@ const getLocation = (location) => {
 }
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(loadCardFB())
+  }, [])
+
   const { pathname } = useLocation()
+  const cardListData = useSelector(state => state.card.list)
 
   return (
     <Wrap>
@@ -30,7 +40,7 @@ function App() {
       <Header location={getLocation(pathname)}/>
       <Switch>
         <Route path="/" exact>
-          <DictionaryList />
+          <DictionaryList cardListData={cardListData} />
         </Route>
         <Route path="/modify/:index" exact>
           <AddWord />

@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import logo from '../img/logo.png'
 
 const Header = ({ location }) => {
-  console.log(location)
   return (
     <HeaderWrap>
       <div className="container">

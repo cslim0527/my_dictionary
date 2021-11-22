@@ -6,12 +6,20 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { useHistory } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { deleteCard } from '../redux/modules/card';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteCardFB } from '../redux/modules/card';
 
 const MoreBtn = ({ index }) => {
   const dispatch = useDispatch()
   const history = useHistory()
+
+  /*
+     XXX  
+    카드 컴포넌트가 여러개 렌더링 되면서 useSelector가 카드 갯수 만큼 실행된다. 
+    나는 전체 데이터를 한번만 불러오면 되는데 이렇게 여러번 실행되면 안좋은것 아닌가??
+  */
+
+  const cardList = useSelector(state => state.card.list)
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -28,7 +36,7 @@ const MoreBtn = ({ index }) => {
   }
 
   const handleDeleteCard = (idx) => {
-    dispatch(deleteCard(idx))
+    dispatch(deleteCardFB(cardList[idx].id))
     setAnchorEl(null);
   }
 

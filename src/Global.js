@@ -57,6 +57,7 @@ const GlobalStyles = createGlobalStyle`
   .container {
     margin: 0 auto;
     max-width: 425px;
+    overflow-x: hidden;
   }
   
   ::-webkit-scrollbar-track {

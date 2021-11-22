@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useRef, useState } from 'react'
 import { useHistory, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux'
-import { addCard, modifyCard } from '../redux/modules/card'
+import { addCardFB, modifyCardFB } from '../redux/modules/card'
 
 import Button from '@material-ui/core/Button';
 const AddWord = () => {
@@ -11,12 +11,7 @@ const AddWord = () => {
   const inputsRef = useRef([])
   const params = useParams()
   const cardList = useSelector(state => state.card.list)
-  const carData = cardList.filter((card, index) => {
-      if (Number(params.index) === index) {
-        return card
-      }
-    })[0]
-
+  const carData = cardList.filter((_, index) => Number(params.index) === index)[0]
 
   const inputsObj = {
     word: false,
@@ -27,7 +22,6 @@ const AddWord = () => {
   const [inputAlert, setInputAlert] = useState(inputsObj)
 
   const handleClickAdd = () => {
-    console.log('add')
 
     const inputs = inputsRef.current
     let newState = {}
@@ -58,7 +52,7 @@ const AddWord = () => {
        return obj
     }, {})
 
-    dispatch(addCard(newCardData))
+    dispatch(addCardFB(newCardData))
 
     history.push('/')
   }
@@ -95,10 +89,10 @@ const AddWord = () => {
 
     const modifyObj = {
       card: newCardData, 
-      index: params.index
+      id: carData.id
     }
 
-    dispatch(modifyCard(modifyObj))
+    dispatch(modifyCardFB(modifyObj))
 
     history.push('/')
   }

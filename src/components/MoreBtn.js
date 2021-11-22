@@ -5,17 +5,32 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const MoreBtn = () => {
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { deleteCard } from '../redux/modules/card';
+
+const MoreBtn = ({ index }) => {
+  const dispatch = useDispatch()
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
     setAnchorEl(null);
   };
 
+  const handleModifyCard = (idx) => {
+    setAnchorEl(null);
+    history.push(`/modify/${idx}`)
+  }
+
+  const handleDeleteCard = (idx) => {
+    dispatch(deleteCard(idx))
+    setAnchorEl(null);
+  }
 
   return (
     <div className="more-btn">
@@ -29,8 +44,8 @@ const MoreBtn = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem className="btn-item" onClick={handleClose}>수정</MenuItem>
-        <MenuItem className="btn-item" onClick={handleClose}>삭제</MenuItem>
+        <MenuItem className="btn-item" onClick={ () => handleModifyCard(index) }>수정</MenuItem>
+        <MenuItem className="btn-item" onClick={ () => handleDeleteCard(index) }>삭제</MenuItem>
       </Menu>
   </div>
   )

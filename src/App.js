@@ -1,38 +1,49 @@
 import GlobalStyles from './Global'
 import styled from 'styled-components'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { useLocation } from 'react-router'
 
 import Header from './components/Header'
 import AddWord from './components/AddWord'
 import DictionaryList from './components/DictionaryList'
 
-const location = {
-  '/': '리스트',
-  '/add': '단어추가'
+const getLocation = (location) => {
+  let current = ''
+
+  if (location === '/') {
+    current = '리스트'
+  } else if (location === '/add') {
+    current = '단어추가'
+  } else if (location.indexOf('modify') > -1) {
+    current = '단어수정'
+  }
+
+  return current
 }
+
 function App() {
   const { pathname } = useLocation()
-
 
   return (
     <Wrap>
       <GlobalStyles />
-      <Route path="/">
-        <Header location={location[pathname]}/>
-      </Route>
-      <Route path="/" exact>
-        <DictionaryList />
-      </Route>
-      <Route path="/add" exact>
-        <AddWord />
-      </Route>
+      <Header location={getLocation(pathname)}/>
+      <Switch>
+        <Route path="/" exact>
+          <DictionaryList />
+        </Route>
+        <Route path="/modify/:index" exact>
+          <AddWord />
+        </Route>
+        <Route path="/add" exact>
+          <AddWord />
+        </Route>
+      </Switch>
     </Wrap>
   );
 }
 
 const Wrap = styled.div`
-  position: relative;
 `
 
 export default App

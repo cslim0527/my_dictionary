@@ -2,22 +2,21 @@ import styled from 'styled-components'
 
 import MoreBtn from './MoreBtn'
 
-const DictionaryCard = () => {
-
+const DictionaryCard = ({ data, index }) => {
   return (
     <CardItem className="word-item">
-      <MoreBtn/>
+      <MoreBtn index={index} />
       <dt className="word-name">
         <b className="label">단어</b>
-        <strong className="content">ㅎ1ㅎ1</strong>
+        <strong className="content">{ data.word }</strong>
       </dt>
       <dd className="word-explain">
         <b className="label">설명</b>
-        <p className="content">ㅎ1ㅎ1</p>
+        <p className="content">{ data.explain }</p>
       </dd>
       <dd className="word-example">
         <b className="label">예시</b>
-        <p className="content"><b>저 친구가 초콜릿을 줬어. ㅎ1ㅎ1</b></p>
+        <p className="content"><b>{ data.example }</b></p>
       </dd>
     </CardItem>
   )

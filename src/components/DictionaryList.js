@@ -19,7 +19,7 @@ const DictionaryList = () => {
         <div className="word-list">
         {
           cardListData.map((card, idx) => {
-            return <DictionaryItem key={idx} data={card} />
+            return <DictionaryItem key={idx} data={card} index={idx} />
           })
         }
           

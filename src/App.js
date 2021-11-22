@@ -5,19 +5,24 @@ import { useLocation } from 'react-router'
 
 import Header from './components/Header'
 import AddWord from './components/AddWord'
+import DictionaryList from './components/DictionaryList'
 
+const location = {
+  '/': '리스트',
+  '/add': '단어추가'
+}
 function App() {
   const { pathname } = useLocation()
-  const location = {
-    '/': '리스트',
-    '/add': '단어추가'
-  }
+
 
   return (
     <Wrap>
       <GlobalStyles />
       <Route path="/">
         <Header location={location[pathname]}/>
+      </Route>
+      <Route path="/" exact>
+        <DictionaryList />
       </Route>
       <Route path="/add" exact>
         <AddWord />
@@ -27,7 +32,7 @@ function App() {
 }
 
 const Wrap = styled.div`
-
-` 
+  position: relative;
+`
 
 export default App

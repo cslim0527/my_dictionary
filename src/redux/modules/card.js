@@ -62,7 +62,6 @@ export function addCardFB(newCard) {
 
 export function modifyCardFB(modifiedCard) {
   return async (dispatch, getState) => {
-    console.log(modifiedCard)
     const docRef = doc(db, 'card', modifiedCard.id)
     await updateDoc(docRef, modifiedCard.card) 
 

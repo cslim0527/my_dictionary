@@ -101,6 +101,18 @@ export function deleteCardFB(cardId) {
       return
     }
 
+    const checkPw = prompt('관리자 암호를 입력해주세요', '')
+    const adminDoc = await getDocs(collection(db, 'admin'))
+    let adminPw = null
+    adminDoc.forEach(admin => {
+      adminPw = admin.data().pw
+    })
+
+    if (checkPw !== adminPw) {
+      alert('비밀번호가 일치하지 않습니다.')
+      return
+    }
+
     const docRef = doc(db, 'card', cardId)
 
     await deleteDoc(docRef)

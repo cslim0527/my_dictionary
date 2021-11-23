@@ -101,7 +101,7 @@ export function deleteCardFB(cardId) {
       return
     }
 
-    const checkPw = prompt('관리자 암호를 입력해주세요', '')
+    const checkPw = prompt('관리자 암호를 입력해주세요 [테스트PW: 1234]', '')
     const adminDoc = await getDocs(collection(db, 'admin'))
     let adminPw = null
     adminDoc.forEach(admin => {

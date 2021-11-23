@@ -55,6 +55,17 @@ const DictionaryList = ({ cardListData, loading }) => {
     }, 250)
   }
 
+  // TODO  카드 데이터가 0 이면...
+  // if (!cardListData) {
+  //   return (
+  //     <div>
+  //       sadasd
+  //     </div>
+  //   )
+  // }
+
+  // 로딩중일 경우도 return 밖에서
+
   return (
     <ListWrap>
       <div onScroll={handleScrollCardList} className="container">
@@ -71,7 +82,7 @@ const DictionaryList = ({ cardListData, loading }) => {
         }
         </div>
 
-      { loading ? <div className="spinner"><SyncLoader color="#D1DAFF" /></div> : '' }
+        { loading ? <div className="spinner"><SyncLoader color="#D1DAFF" /></div> : '' }
 
         <div className="add-btn">
           <button onClick={handleClickAddBtn}>

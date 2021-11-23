@@ -32,7 +32,7 @@ export function deleteCard(cardId) {
 }
 
 // middlewares
-export function loadCardFB(page) {
+export function loadCardFB(page = 1) {
   return async (dispatch) => {
     const cardListData = await getDocs(collection(db, 'card'))
     let dbArr = []
@@ -74,6 +74,12 @@ export function addCardFB(newCard) {
 
 export function modifyCardFB(modifiedCard) {
   return async (dispatch, getState) => {
+
+    if (!modifiedCard) {
+      alert('알수없는 이유로 수정이 불가합니다 :(')
+      return
+    }
+
     const docRef = doc(db, 'card', modifiedCard.id)
     await updateDoc(docRef, modifiedCard.card) 
 
@@ -89,6 +95,12 @@ export function modifyCardFB(modifiedCard) {
 
 export function deleteCardFB(cardId) {
   return async (dispatch) => {
+    
+    if (!cardId) {
+      alert('유효한 데이터가 아닙니다 :(')
+      return
+    }
+
     const docRef = doc(db, 'card', cardId)
 
     await deleteDoc(docRef)

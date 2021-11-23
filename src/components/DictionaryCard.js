@@ -29,6 +29,10 @@ const CardItem = styled.dl`
     border: 1px solid #eaeaea;
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     position: relative;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
 
     &:hover {
       .more-btn {

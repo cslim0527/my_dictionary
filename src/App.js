@@ -26,9 +26,10 @@ const getLocation = (location) => {
 
 function App() {
   const dispatch = useDispatch()
+  const loading = useSelector(state => state.card.hasNext)
 
   useEffect(() => {
-    dispatch(loadCardFB())
+    dispatch(loadCardFB(1))
   }, [])
 
   const { pathname } = useLocation()
@@ -40,7 +41,7 @@ function App() {
       <Header location={getLocation(pathname)}/>
       <Switch>
         <Route path="/" exact>
-          <DictionaryList cardListData={cardListData} />
+          <DictionaryList cardListData={cardListData} loading={loading} />
         </Route>
         <Route path="/modify/:index" exact>
           <AddWord />

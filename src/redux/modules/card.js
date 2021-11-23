@@ -9,7 +9,9 @@ const MODIFY = 'card/MODIFY'
 const DELETE = 'card/DELETE'
 
 const initialState = {
-  list: []
+  page: 1,
+  list: [],
+  hasNext: false
 }
 
 // Action Creators
@@ -30,10 +32,10 @@ export function deleteCard(cardId) {
 }
 
 // middlewares
-export function loadCardFB() {
+export function loadCardFB(page) {
   return async (dispatch) => {
     const cardListData = await getDocs(collection(db, 'card'))
-    const dbArr = []
+    let dbArr = []
     cardListData.forEach(card => {
       const cardObj = {
         id: card.id,
@@ -42,7 +44,17 @@ export function loadCardFB() {
       dbArr.push(cardObj)
     })
 
-    dispatch(loadCard(dbArr))
+    const start = page === 1 ? 0 : (page - 1) * 5
+    const end = start + 5
+    dbArr = dbArr.sort((a, b) => b.datetime - a.datetime).slice(start, end)
+
+    const loadOjb = {
+      page: page,
+      list: dbArr,
+      hasNext: dbArr.length < 5 ? false : true
+    }
+
+    dispatch(loadCard(loadOjb))
   }
 }
 
@@ -89,15 +101,19 @@ export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'card/LOAD':
       return {
-        list: action.card
+        page: action.card.page,
+        list: [
+          ...state.list,
+          ...action.card.list
+        ],
+        hasNext: action.card.hasNext
       }
 
     case 'card/ADD':
+      let sortedData = [ ...state.list, action.card ]
+      sortedData.sort((a, b) => b.datetime - a.datetime)
       return {
-        list: [
-          ...state.list,
-          action.card
-        ]
+        list: sortedData
       }
 
     case 'card/MODIFY':

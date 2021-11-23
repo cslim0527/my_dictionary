@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { loadCardFB } from './redux/modules/card'
 
 import Header from './components/Header'
-import AddWord from './components/AddWord'
+import EditWord from './components/EditWord'
 import DictionaryList from './components/DictionaryList'
 
 const getLocation = (location) => {
@@ -44,10 +44,10 @@ function App() {
           <DictionaryList cardListData={cardListData} loading={loading} />
         </Route>
         <Route path="/modify/:index" exact>
-          <AddWord />
+          <EditWord />
         </Route>
         <Route path="/add" exact>
-          <AddWord />
+          <EditWord />
         </Route>
       </Switch>
     </Wrap>

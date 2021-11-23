@@ -118,7 +118,7 @@ const AddWord = () => {
 
     dispatch(modifyCardFB(modifyObj))
 
-    history.push('/')
+    history.replace('/')
   }
 
   //  TODO  직전 state를 참조할 수 있는 prevValue 매개변수의 개념에 대해서 좀 더 알아보고 정리하자.
@@ -133,7 +133,7 @@ const AddWord = () => {
   }
 
   const handleClickBack = () => {
-    history.push('/')
+    history.replace('/')
   }
 
   return (

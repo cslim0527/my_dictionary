@@ -80,10 +80,12 @@ const CardItem = styled.dl`
     }
 
     .word-explain {
-
+      font-size: 14px;
     }
 
     .word-example {
+      font-size: 14px;
+      
       .content {
         color: #03a9f4;
       }

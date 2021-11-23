@@ -120,7 +120,10 @@ const ListWrap = styled.section`
     position: fixed;
     bottom: 16px;
     text-align: right;
-
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0px 28px;
+    
     button {
       color: #39358c;
       width: 49px;

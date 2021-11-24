@@ -9,6 +9,7 @@ import { loadCardFB } from './redux/modules/card'
 import Header from './components/Header'
 import EditWord from './components/EditWord'
 import DictionaryList from './components/DictionaryList'
+import NotFound from './components/NotFound'
 
 const getLocation = (location) => {
   let current = ''
@@ -48,6 +49,9 @@ function App() {
         </Route>
         <Route path="/add" exact>
           <EditWord />
+        </Route>
+        <Route>
+          <NotFound />
         </Route>
       </Switch>
     </Wrap>

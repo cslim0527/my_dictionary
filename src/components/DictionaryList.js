@@ -1,88 +1,56 @@
 import styled from 'styled-components'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { loadCardFB } from '../redux/modules/card'
 
 import AddIcon from '@material-ui/icons/Add'
 import emptyImg from '../img/empty.png'
-import SyncLoader from "react-spinners/SyncLoader";
+import SyncLoader from "react-spinners/SyncLoader"
 
 import DictionaryItem from './DictionaryCard'
+import Button from '@material-ui/core/Button'
 
-const DictionaryList = ({ cardListData, loading }) => {
+const DictionaryList = ({ cardListData, loading, setPage }) => {
 
-  const dispatch = useDispatch()
-  const heightRef = useRef()
   const history = useHistory()
-  const page = useSelector(state => state.card.page) // 현재 로드된 페이지 값
-  const hasNext = useSelector(state => state.card.hasNext) // 다음 로드될 내용의 유무 상태값
+  const loadingRef = useRef(null)
 
   const handleClickAddBtn = () => {
     history.push('/add')
   }
 
-  // 디바운스 제어 변수
-  let isScroll = false
-
-  const handleScrollCardList = (e) => {
-    if (!hasNext) { // 다음 로드 할 내용이 없다면 스크롤 이벤트를 실행하지 않음
-      return
+  const handleObserver = new IntersectionObserver(([{ isIntersecting }]) => {
+    if (isIntersecting) {
+      setPage(currPage => currPage + 1)
     }
+  })
 
-    const currentScroll = Math.floor(e.target.scrollTop + e.target.clientHeight -83.8)
-    const maxScroll = Math.floor(heightRef.current.scrollHeight)
-    let percent = currentScroll / maxScroll * 100
-
-    if (percent < 98 || isScroll) {
-      return
+  useEffect(() => {
+    const loadingTarget = loadingRef.current
+    handleObserver.observe(loadingTarget)
+    return () => {
+      handleObserver.unobserve(loadingTarget)
     }
+  }, [])
 
-    isScroll = setTimeout(() => {
-      dispatch(loadCardFB(page + 1))
-
-      /*
-         FIXME  
-         스크롤 마구잡이로 했을때 렌더링이 끝나지 않았는데 
-         isScroll 값이 false로 유효성을 통과하게 되어.. 
-         렌더링 시간을 벌어줄수 있도록 setTimeout 안에서 setTimeout을 썻는데.. 너무 괴랄해보인다.
-         당장에 버그는 해결되었지만 다른 해결방법이 있는지 더 알아보고 픽스하자.
-      */
-      setTimeout(() => {
-        isScroll = false
-      }, 1000)
-
-    }, 250)
-  }
-
-  // TODO  카드 데이터가 0 이면...
-  // if (!cardListData) {
-  //   return (
-  //     <div>
-  //       sadasd
-  //     </div>
-  //   )
-  // }
-
-  // 로딩중일 경우도 return 밖에서
 
   return (
     <ListWrap>
-      <div onScroll={handleScrollCardList} className="container">
-        <div ref={heightRef} className="word-list">
+      <div className="container">
+        <div className="word-list">
         {
           cardListData.length 
             ? cardListData.map((card, idx) => {
-                return <DictionaryItem key={idx} data={card} index={idx} />
-              })
-            : <div className="empty-word">
+              return <DictionaryItem key={idx} data={card} index={idx} />
+            })
+            : <div className="empty-box">
                 <img src={emptyImg} alt="" />
-                아직 등록한 단어가 없어요!
+                <span className="emptry-txt">아직 등록한 단어가 없어요!</span>
+                <Button onClick={handleClickAddBtn} variant="outlined">등록하기</Button>
               </div>
         }
         </div>
 
-        { loading ? <div className="spinner"><SyncLoader color="#D1DAFF" /></div> : '' }
+        <div ref={loadingRef} className={loading && cardListData.length ? 'spinner show' : 'spinner'}><SyncLoader color="#D1DAFF" /></div>
 
         <div className="add-btn">
           <button onClick={handleClickAddBtn}>
@@ -98,21 +66,22 @@ const DictionaryList = ({ cardListData, loading }) => {
 
 const ListWrap = styled.section`
   .container {
-    position: relative;
-    height: calc(100vh - 81px);
-    overflow-y: auto;
     max-width: 457px;
     padding: 0 16px;
   }
 
   .spinner {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     padding: 40px 0 20px 0;
+
+    &.show {
+      display: flex;
+    }
   }
 
-  .empty-word {
+  .empty-box {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -122,6 +91,10 @@ const ListWrap = styled.section`
     img {
       max-width: 180px;
       width: 50%;
+    }
+
+    .emptry-txt {
+      margin-bottom: 20px;
     }
   }
 

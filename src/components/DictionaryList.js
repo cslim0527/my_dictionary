@@ -6,7 +6,7 @@ import AddIcon from '@material-ui/icons/Add'
 import emptyImg from '../img/empty.png'
 import SyncLoader from "react-spinners/SyncLoader"
 
-import DictionaryItem from './DictionaryCard'
+import DictionaryCard from './DictionaryCard'
 import Button from '@material-ui/core/Button'
 
 const DictionaryList = ({ cardListData, loading, setPage }) => {
@@ -51,7 +51,7 @@ const DictionaryList = ({ cardListData, loading, setPage }) => {
         {
           cardListData.length
             ? cardListData.map((card, idx) => {
-              return <DictionaryItem key={idx} data={card} index={idx} />
+              return <DictionaryCard key={idx} data={card} index={idx} />
             })
             : <div className="empty-box">
                 <img src={emptyImg} alt="" />

@@ -10,7 +10,6 @@ import DictionaryItem from './DictionaryCard'
 import Button from '@material-ui/core/Button'
 
 const DictionaryList = ({ cardListData, loading, setPage }) => {
-
   const history = useHistory()
   const loadingRef = useRef(null)
 
@@ -25,20 +24,32 @@ const DictionaryList = ({ cardListData, loading, setPage }) => {
   })
 
   useEffect(() => {
-    const loadingTarget = loadingRef.current
-    handleObserver.observe(loadingTarget)
-    return () => {
-      handleObserver.unobserve(loadingTarget)
+    if (cardListData === null) {
+      return
     }
-  }, [])
 
+    const loadingTarget = loadingRef.current
+    loadingTarget && handleObserver.observe(loadingTarget)
+
+    return () => {
+      loadingTarget && handleObserver.unobserve(loadingTarget)
+    }
+  }, [cardListData])
+
+  if (cardListData === null) {
+    return (
+      <ListWrap>
+        <div ref={loadingRef} className='spinner show'><SyncLoader color="#D1DAFF" /></div>
+      </ListWrap>
+    )
+  }
 
   return (
     <ListWrap>
       <div className="container">
         <div className="word-list">
         {
-          cardListData.length 
+          cardListData.length
             ? cardListData.map((card, idx) => {
               return <DictionaryItem key={idx} data={card} index={idx} />
             })

@@ -10,7 +10,7 @@ const DELETE = 'card/DELETE'
 
 const initialState = {
   page: 1,
-  list: [],
+  list: null,
   hasNext: false
 }
 
@@ -124,14 +124,26 @@ export function deleteCardFB(cardId) {
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case 'card/LOAD':
-      return {
-        page: action.card.page,
-        list: [
-          ...state.list,
-          ...action.card.list
-        ],
-        hasNext: action.card.hasNext
+
+      if (action.card.list === 0) {
+        return {
+          page: action.card.page,
+          list: null,
+          hasNext: action.card.hasNext
+        }
+      } else {
+          const loadList = state.list === null ? [...action.card.list] : [...state.list, ...action.card.list]
+          if (loadList[0] === null) {
+            loadList.shift()
+          }
+        return {
+          page: action.card.page,
+          list: loadList,
+          hasNext: action.card.hasNext
+        }
       }
+
+
 
     case 'card/ADD':
       let sortedData = [ ...state.list, action.card ]

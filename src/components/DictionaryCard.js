@@ -8,15 +8,15 @@ const DictionaryCard = ({ data, index }) => {
       <MoreBtn index={index} />
       <dt className="word-name">
         <b className="label">단어</b>
-        <strong className="content">{ data.word }</strong>
+        <strong className="content">{ data?.word }</strong>
       </dt>
       <dd className="word-explain">
         <b className="label">설명</b>
-        <p className="content">{ data.explain }</p>
+        <p className="content">{ data?.explain }</p>
       </dd>
       <dd className="word-example">
         <b className="label">예시</b>
-        <p className="content"><b>{ data.example }</b></p>
+        <p className="content"><b>{ data?.example }</b></p>
       </dd>
     </CardItem>
   )
